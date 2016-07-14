@@ -55,7 +55,7 @@ class Player():
 			self.playerAttributes["Printable Value"] = valueString
 
 	def __getitem__(self, arg):
-		return self.playerAttributes[arg] if arg in self.playerAttributes else "N/A"
+		return self.playerAttributes[arg] if arg in self.playerAttributes else "-" #or "n/a"
 
 
 if __name__ == "__main__":
