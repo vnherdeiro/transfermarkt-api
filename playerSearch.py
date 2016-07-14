@@ -4,14 +4,14 @@
 
 
 import urllib
-#import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 import sys
 import os
 import re
-import datetime
+#import datetime
+
+#our class handling players
 from Player import Player
-#import matplotlib.pylab as plt
 
 
 opener = urllib.request.build_opener()
@@ -30,4 +30,4 @@ while True:
 
 	for name, player in dicPlayers.items():
 		#print(player["Name"], "\t", player["Age"],"\t", player["Current club"], "\t", player["Printable Value"],"\t", player["Position"])
-		print("\t%-40s %3s %40s %15s\t%-30s" %(player["Name"], player["Age"], player["Current club"], player["Printable Value"], player["Position"]))
+		print("\t%-35s %2s %35s %13s\t%-30s" %(player["Name"], player["Age"], player["Current club"], player["Printable Value"], player["Position"]))

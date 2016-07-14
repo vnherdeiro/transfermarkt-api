@@ -8,7 +8,6 @@
 import urllib
 from bs4 import BeautifulSoup
 import re
-import datetime
 
 
 class Player():
@@ -23,7 +22,7 @@ class Player():
 		soup = BeautifulSoup( content, "html.parser")
 
 		#retrieving picture url and basic name
-		link = soup.find_all("div", {"class":"dataBild"})[0]
+		link = soup.find("div", {"class":"dataBild"})
 		self.playerAttributes["Profile Picture"] = link.img["src"]
 		self.playerAttributes["Name"] = link.img["title"]
 
@@ -32,19 +31,31 @@ class Player():
 			for line in link.find_all("tr"):#, {"class" : "dataValue"}):
 				text = re.sub("\r|\n|\t|\xa0|  ", "", line.text)
 				lhs, rhs = text.split(":")
-				self.playerAttributes[lhs] = rhs
+				if rhs:
+					self.playerAttributes[lhs] = rhs
 
-		#retrieving player value graph and storing 
+		#retrieving player value over career time graph and storing 
 		theXs = "".join( map(str, re.findall(b"'x':\d+",content)))
 		theXs = list( map( lambda x : int(x)/1000, re.findall("\d+", theXs)))
 		theYs = "".join( map(str, re.findall(b"'y':\d+",content)))
 		theYs = list( map( int, re.findall("\d+", theYs)))
-		self.playerAttributes["Value"] = theYs[-1]
-		self.playerAttributes["Value Graph"] = zip(theXs,theYs)
+		if theYs:
+			self.playerAttributes["Value"] = theYs[-1]
+			self.playerAttributes["Value Graph"] = zip(theXs, theYs)
+			#putting last value in printable form
+			value = int(theYs[-1])
+			valueString = ""
+			while value:
+				nextVal = value // 1000
+				if nextVal:
+					valueString = "," + "%03d" %(value % 1000) + valueString
+				else:
+					valueString = "£%d" %(value % 1000) + valueString
+				value = nextVal
+			self.playerAttributes["Printable Value"] = valueString
 
-
-		for entry, value in self.playerAttributes.items():
-			print("\t",entry,"\t",value)
+	def __getitem__(self, arg):
+		return self.playerAttributes[arg] if arg in self.playerAttributes else "N/A"
 
 
 if __name__ == "__main__":
