@@ -34,9 +34,9 @@ class Player():
 				if rhs:
 					self.playerAttributes[lhs] = rhs
 
-		#retrieving player value over career time graph and storing 
+		#retrieving player value over career time graph and storing
 		theXs = "".join( map(str, re.findall(b"'x':\d+",content)))
-		theXs = list( map( lambda x : int(x)/1000, re.findall("\d+", theXs)))
+		theXs = list( map( lambda x : int(x)//1000, re.findall("\d+", theXs)))
 		theYs = "".join( map(str, re.findall(b"'y':\d+",content)))
 		theYs = list( map( int, re.findall("\d+", theYs)))
 		if theYs:
@@ -59,7 +59,8 @@ class Player():
 
 
 if __name__ == "__main__":
-	
+
 	#running check on Lord Eder
 	url = "http://www.transfermarkt.co.uk/eder/profil/spieler/84481"
 	thePlayer = Player(url)
+	print(thePlayer.playerAttributes)
