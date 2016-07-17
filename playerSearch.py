@@ -36,7 +36,7 @@ def research(playerName):
 		#quickerSearch
 		dicUrls = {}
 		dicAttributes = {}
-		for name, age, club, value in zip(soup.find_all("a",{"class":"spielprofil_tooltip"}), soup.find_all("td", class_ = "zentriert", text=re.compile("\d+")), soup.find_all("img", {"class":"tiny_wappen"}),soup.find_all("td", class_ = "rechts hauptlink")):
+		for name, age, club, value in zip( soup.find_all("a", {"class":"spielprofil_tooltip"}), soup.find_all("td", class_ = "zentriert", text=re.compile("\d+")), soup.find_all("img", {"class":"tiny_wappen"}),soup.find_all("td", class_ = "rechts hauptlink")):
 			#print( "\t%25s %2s %-35s %8s" %(name.text, age.text, club["alt"],value.text))
 			dicUrls[name.text] = baseProfileUrl + name["href"]
 			dicAttributes[name.text] = (age.text, club["alt"], value.text)
