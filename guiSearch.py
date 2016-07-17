@@ -28,14 +28,13 @@ class QPlayerLabel(QLabel):
 	def mousePressEvent(self, event):
 		self.newWindow = PlayerWindow.PlayerWindow( self.playerUrl)
 		self.newWindow.show()
-		#print("window opened...")
-		# newWindow.exec_()
-		#input()
 
 #need to add on click opening player window
 
 def readVal(stringVal):
-	value = float(re.findall("\d+.\d+", stringVal)[0])
+	if stringVal == "-":
+		return 0
+	value = float(re.findall("\d+.\d+|\d+", stringVal)[0])
 	if stringVal[-1] == "m":
 		value *= 10**6
 	elif stringVal[-1] == "k":
@@ -69,7 +68,7 @@ class SearchGui(QWidget):
 
 		#self.resultsEdit = QGridLayout()
 		self.grid = QGridLayout()
-		self.grid.setSpacing(10)
+		self.grid.setSpacing(4)
 
 		self.grid.addWidget(researchLabel, 1, 0)
 		self.grid.addWidget(self.researchEdit, 1, 1)
@@ -103,17 +102,21 @@ class SearchGui(QWidget):
 			dicUrls, dicProperties = output
 			#printing after ordering by decreasing market value
 			index = 3
+			# print(dicProperties)
 			for name, (age, club, value)  in sorted(dicProperties.items(), key = lambda x : readVal(x[-1][-1]))[::-1]:
 				playerUrl = dicUrls[ name]
 				labelText = "%-25s %2s %25s %8s" %(name, age, club, value)
 				newLabel = QPlayerLabel(labelText, playerUrl)
+				newLabel.setFont( QFont("Fira Mono Bold",12))
 				self.grid.addWidget(newLabel, index, 1)
 				index += 1
 			#self.resultsEdit.setText(newText)
 			#self.resultsEdit.adjustSize()
 		#else:
 			#self.resultsEdit.setText("")
-
+	def keyPressEvent(self, e):
+		if e.key() == Qt.Key_Escape:
+			self.close()
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
