@@ -121,6 +121,5 @@ class SearchGui(QWidget):
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	ex = SearchGui()
-	#sys.exit(app.exec_())
-	app.exec_()
+	sys.exit(app.exec_())
 	# clearFolder()
