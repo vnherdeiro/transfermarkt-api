@@ -26,9 +26,10 @@ class QPlayerLabel(QLabel):
 		super().__init__(labelText)
 
 	def mousePressEvent(self, event):
-		newWindow = PlayerWindow.PlayerWindow( self.playerUrl)
-		newWindow.show()
-		newWindow.exec_()
+		self.newWindow = PlayerWindow.PlayerWindow( self.playerUrl)
+		self.newWindow.show()
+		#print("window opened...")
+		# newWindow.exec_()
 		#input()
 
 #need to add on click opening player window
