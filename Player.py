@@ -23,7 +23,7 @@ class Player():
 
 		#retrieving picture url and basic name
 		link = soup.find("div", {"class":"dataBild"})
-		self.playerAttributes["Profile Picture"] = link.img["src"]
+		self.playerAttributes["Picture"] = link.img["src"]
 		self.playerAttributes["Name"] = link.img["title"]
 
 		#reading tabular info and storing

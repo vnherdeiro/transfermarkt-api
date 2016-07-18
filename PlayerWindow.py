@@ -38,14 +38,14 @@ class PlayerWindow(QWidget):
 		else:
 			self.pictureFilename = "." + self.profile["Name"].lower().replace(" ","") + ".jpg"
 		# print(self.pictureFilename)
-		downloadFile(self.profile["Profile Picture"], self.pictureFilename)
+		downloadFile(self.profile["Picture"], self.pictureFilename)
 		self.pictureLabel.setPixmap(QPixmap( self.pictureFilename))
 		self.pictureLabel.adjustSize()
 		grid.addWidget(self.pictureLabel,0,0,3,3)
 		#self.label.setGeometry(160, 40, 80, 30)
 		index = 3
 		for key, value in self.profile.playerAttributes.items():
-			if isinstance(value, (int,str)) and key != "Profile Picture":
+			if isinstance(value, (int,str)) and key != "Picture":
 				lhs = QLabel()
 				rhs = QLabel()
 				lhs.setText( key)
