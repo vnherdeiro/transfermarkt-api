@@ -6,19 +6,18 @@ from PyQt5.QtWidgets import (QWidget, QLabel, QLineEdit, QTextEdit, QGridLayout,
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 import PlayerWindow
-#function reading marker value from string for later ordering
 import re
-
 import glob
 import os
 
 
+#clearing hidden images in folder
 def clearFolder():
 	filesToDel = glob.glob(".*jpg")
-	# print( filesToDel)
 	for lFile in filesToDel:
 		os.remove(lFile)
 
+#object handling a player search result and opening player window when clicked on
 class QPlayerLabel(QLabel):
 
 	def __init__(self, labelText, theUrl):
@@ -41,7 +40,7 @@ def readVal(stringVal):
 		value *= 10**3
 	return value
 
-class SearchGui(QWidget):
+class SearchWindow(QWidget):
 
 	def __init__(self):
 		super().__init__()
@@ -55,18 +54,12 @@ class SearchGui(QWidget):
 		resultsLabel = QLabel('Search results')
 
 		self.researchEdit = QLineEdit()
-		#self.resultsEdit = QLabel()
-		#self.resultsEdit = QLabel()
 		#self.resultsEdit.setFont( QFont("Fira Mono Bold",12))
-		#self.resultsEdit.setColumnCount(4)
-		#self.resultsEdit.setRowCount(4)
-
 		#self.resultsEdit.setFontPointSize(15)
 		#self.resultsEdit.setAlignment(Qt.AlignRight)
 
 		self.researchEdit.returnPressed.connect(self.newResearch)
 
-		#self.resultsEdit = QGridLayout()
 		self.grid = QGridLayout()
 		self.grid.setSpacing(4)
 
@@ -74,7 +67,6 @@ class SearchGui(QWidget):
 		self.grid.addWidget(self.researchEdit, 1, 1)
 
 		self.grid.addWidget(resultsLabel, 2, 0)
-		#self.grid.addWidget(self.resultsEdit, 2, 1, 5, 1)
 
 		self.setLayout(self.grid)
 
@@ -96,7 +88,7 @@ class SearchGui(QWidget):
 	# 		# widg.setParent(None)
 	# 		self.grid.removeWidget(widg)
 	# 		widg.deleteLater()
-			# del widg
+	#		del widg
 		#self.labelList = []
 		if output:
 			dicUrls, dicProperties = output
@@ -110,10 +102,8 @@ class SearchGui(QWidget):
 				newLabel.setFont( QFont("Fira Mono Bold",12))
 				self.grid.addWidget(newLabel, index, 1)
 				index += 1
-			#self.resultsEdit.setText(newText)
 			#self.resultsEdit.adjustSize()
-		#else:
-			#self.resultsEdit.setText("")
+
 	def keyPressEvent(self, e):
 		if e.key() == Qt.Key_Escape:
 			self.close()
@@ -124,6 +114,6 @@ class SearchGui(QWidget):
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
-	ex = SearchGui()
-	sys.exit(app.exec_())
-	# clearFolder()
+	ex = SearchWindow()
+	sys.exit( app.exec_())
+
