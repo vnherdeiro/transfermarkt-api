@@ -35,10 +35,12 @@ class Player():
 					self.playerAttributes[lhs] = rhs
 
 		#retrieving player value over career time graph and storing
-		theXs = "".join( map(str, re.findall(b"'x':\d+",content)))
-		theXs = list( map( lambda x : int(x)//1000, re.findall("\d+", theXs)))
-		theYs = "".join( map(str, re.findall(b"'y':\d+",content)))
-		theYs = list( map( int, re.findall("\d+", theYs)))
+		#theXs = "".join( map(str, re.findall(b"'x':\d+",content)))
+		#theXs = list( map( lambda x : int(x)//1000, re.findall("\d+", theXs)))
+		#theYs = "".join( map(str, re.findall(b"'y':\d+",content)))
+		#theYs = list( map( int, re.findall("\d+", theYs)))
+		theXs = [ int(_)//1000 for _ in re.findall(b"'x':(\d+)", content)]
+		theYs = [ int(_) for _ in re.findall(b"'y':(\d+)", content)]
 		if theYs:
 			self.playerAttributes["Value"] = theYs[-1]
 			self.playerAttributes["Value Graph"] = zip(theXs, theYs)
