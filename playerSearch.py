@@ -40,6 +40,8 @@ def research(playerName):
 			#print( "\t%25s %2s %-35s %8s" %(name.text, age.text, club["alt"],value.text))
 			dicUrls[name.text] = baseProfileUrl + name["href"]
 			dicAttributes[name.text] = (age.text, club["alt"], value.text)
+		del soup
+		del content
 		return dicUrls, dicAttributes
 	except:
 		return None

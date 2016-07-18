@@ -63,6 +63,10 @@ class PlayerWindow(QWidget):
 	def __del__(self):
 		if os.path.isfile(self.pictureFilename):
 			os.remove(self.pictureFilename)
+		del self.profile
+		del self.setLayout
+		del self.profile
+		del self.pictureLabel
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)

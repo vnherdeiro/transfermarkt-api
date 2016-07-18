@@ -118,6 +118,10 @@ class SearchGui(QWidget):
 		if e.key() == Qt.Key_Escape:
 			self.close()
 
+	def __del__(self):
+		del self.grid
+		del self.researchEdit
+
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	ex = SearchGui()
