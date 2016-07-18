@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 
-
+#window scrapping and showing player information
 
 import sys
-from PyQt5.QtWidgets import (QWidget, QSlider,
-	QLabel, QApplication, QGridLayout)
+from PyQt5.QtWidgets import (QWidget, QSlider, QLabel, QApplication, QGridLayout)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 import urllib
@@ -13,6 +12,7 @@ import re
 import Player
 import os
 
+#downloads and stores file -- used to download player profile picture
 def downloadFile(url, fileName):
 	opener = urllib.request.build_opener()
 	opener.addheaders = [('User-agent', 'Mozilla/5.0')]
@@ -56,7 +56,7 @@ class PlayerWindow(QWidget):
 		self.setWindowTitle( self.profile["Name"])
 		self.show()
 
-	def keyPressEvent(self, e):
+	def keyPressEvent(self, e): #closes on Esc press
 		if e.key() == Qt.Key_Escape:
 			self.close()
 
@@ -65,7 +65,7 @@ class PlayerWindow(QWidget):
 			os.remove(self.pictureFilename)
 
 if __name__ == '__main__':
-	app = QApplication(sys.argv)
+	app = QApplication( sys.argv)
 	url = "http://www.transfermarkt.co.uk/cristiano-ronaldo/profil/spieler/8198"
-	ex = PlayerWindow(url)
-	sys.exit(app.exec_())
+	ex = PlayerWindow( url)
+	sys.exit( app.exec_())
