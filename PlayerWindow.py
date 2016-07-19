@@ -3,7 +3,13 @@
 #window scrapping and showing player information
 
 import sys
-from PyQt5.QtWidgets import (QWidget, QSlider, QLabel, QApplication, QGridLayout)
+import matplotlib
+# Make sure that we are using QT5
+matplotlib.use('Qt5Agg')
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
+from PyQt5.QtWidgets import (QSizePolicy, QWidget, QSlider, QLabel, QApplication, QGridLayout)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 import urllib
@@ -11,6 +17,7 @@ from bs4 import BeautifulSoup
 import re
 import Player
 import os
+from datetime import datetime
 
 #downloads and stores file -- used to download player profile picture
 def downloadFile(url, fileName):
@@ -19,6 +26,35 @@ def downloadFile(url, fileName):
 	content = opener.open(url)
 	with open(fileName,"b+w") as f:
 		f.write( content.read())
+
+class ValueGraph(FigureCanvas):
+	"""Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
+
+	def __init__(self, data, parent=None, width=5, height=4, dpi=100):
+		self.fig = Figure(figsize=(width, height), dpi=dpi)
+		self.axes = self.fig.add_subplot(111)
+		# We want the axes cleared every time plot() is called
+		self.axes.hold(False)
+		self.xData, self.yData = zip(*data)
+		self.xData = list( map( lambda x : datetime.fromtimestamp( x), self.xData))
+		self.yData = list( map( lambda x : x / 10**6, self.yData))
+		self.drawGraph()
+
+		FigureCanvas.__init__(self, self.fig)
+		self.setParent(parent)
+
+		FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding, QSizePolicy.Expanding)
+		FigureCanvas.updateGeometry(self)
+
+	def drawGraph(self):
+		self.axes.set_axis_bgcolor(".85")
+		self.axes.plot(self.xData, self.yData, marker="o", lw=2, c="#1c798e")
+		maxVal = max( self.yData)
+		self.axes.axhline(y= maxVal, c="orange", ls="--", lw=1.5)
+		self.axes.grid( True)
+		self.axes.set_title("Player value over career years", fontsize=10)
+		self.axes.set_ylabel("Million £", fontsize=9)
+		#self.fig.tight_layout() -- bugged and useless here
 
 
 class PlayerWindow(QWidget):
@@ -39,20 +75,22 @@ class PlayerWindow(QWidget):
 			self.pictureFilename = "." + self.profile["Name"].lower().replace(" ","") + ".jpg"
 		# print(self.pictureFilename)
 		downloadFile(self.profile["Picture"], self.pictureFilename)
-		self.pictureLabel.setPixmap(QPixmap( self.pictureFilename))
+		self.pictureLabel.setPixmap( QPixmap( self.pictureFilename))
 		self.pictureLabel.adjustSize()
-		grid.addWidget(self.pictureLabel,0,0,3,3)
+		grid.addWidget(self.pictureLabel,0,0,5,5)
 		#self.label.setGeometry(160, 40, 80, 30)
-		index = 3
+		index = 5
 		for key, value in self.profile.playerAttributes.items():
-			if isinstance(value, (int,str)) and key != "Picture":
+			if isinstance(value, (int,str)) and key != "Picture" and key != "Value":
 				lhs = QLabel()
 				rhs = QLabel()
 				lhs.setText( key)
 				rhs.setText( str(value))
-				grid.addWidget( lhs, index, 0)
-				grid.addWidget( rhs, index, 1)
+				grid.addWidget( lhs, index, 0, Qt.AlignTop)
+				grid.addWidget( rhs, index, 1, Qt.AlignTop)
 				index += 1
+		theGraph = ValueGraph( self.profile["Value Graph"], QWidget(self), width=5, height=4, dpi=100)
+		grid.addWidget(theGraph, index, 0, 3, 3, Qt.AlignTop)
 		self.setWindowTitle( self.profile["Name"])
 		self.show()
 
@@ -63,8 +101,6 @@ class PlayerWindow(QWidget):
 	def __del__(self):
 		if os.path.isfile(self.pictureFilename):
 			os.remove(self.pictureFilename)
-		del self.profile
-		del self.setLayout
 		del self.profile
 		del self.pictureLabel
 
