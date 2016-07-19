@@ -20,6 +20,9 @@ t3 = time()
 print t3-t2
 #print soup.prettify()
 
+#cleans a string of excessive spaces and newlines
+def cleanString(theString):
+	return re.sub("\r|\n|\t|\xa0|  ", "", theString)
 
 trophies = {}
 for link in soup.find_all("div", class_="dataErfolg"):
@@ -31,8 +34,31 @@ for link in soup.find_all("div", class_="dataErfolg"):
 	#print link.prettify(),"\n\n\n"
 
 for link in soup.find_all("div", class_="dataDaten"):
-	print link.prettify()
-	#continue
+	# print link.prettify()
+	continue
+
+#collecting list of all clubs the player has played for
+clubsPlayedFor = set()
+#redundancy here in collecting the club information
+for link in soup.find_all("td", class_="hauptlink no-border-links"):
+	clubsPlayedFor.add(	link.text)
+# print clubsPlayedFor
+
+#now collecting goal information
+
+#club teammates information
+link = soup.find("select", {"data-placeholder":"Player(s)"})
+# for l in link.find_all("option"):
+# 	print l.text
+
+#league clubs information
+link = soup.find("select", {"data-placeholder":"Club(s)"})
+# for l in link.find_all("option"):
+# 	print l.text
+
+link = soup.find("table", class_="items")
+for data in link.find_all("td", class_="zentriert"):
+	print cleanString(data.text)
 
 t4 = time()
 print t4-t3
