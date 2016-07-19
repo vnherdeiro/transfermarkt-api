@@ -31,9 +31,13 @@ for link in soup.find_all("div", class_="dataErfolg"):
 	#print link.prettify(),"\n\n\n"
 
 for link in soup.find_all("div", class_="dataDaten"):
-	print link.prettify()
-	#continue
+	# print link.prettify()
+	continue
 
+clubsPlayedFor = set()
+for link in soup.find_all("td", class_="hauptlink no-border-links"):
+	clubsPlayedFor.add(	link.text)
+print clubsPlayedFor
 t4 = time()
 print t4-t3
 #print trophies
