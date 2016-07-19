@@ -81,7 +81,7 @@ class PlayerWindow(QWidget):
 		#self.label.setGeometry(160, 40, 80, 30)
 		index = 5
 		for key, value in self.profile.playerAttributes.items():
-			if isinstance(value, (int,str)) and key != "Picture" and key != "Value":
+			if isinstance(value, (int,str)) and key != "Picture" and key != "Value (int)":
 				lhs = QLabel()
 				rhs = QLabel()
 				lhs.setText( key)

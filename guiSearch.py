@@ -100,7 +100,7 @@ class SearchWindow(QWidget):
 				labelText = "%-25s %2s %25s %8s" %(name, age, club, value)
 				newLabel = QPlayerLabel(labelText, playerUrl)
 				newLabel.setFont( QFont("Fira Mono Bold",12))
-				self.grid.addWidget(newLabel, index, 1)
+				self.grid.addWidget(newLabel, index, 1, Qt.AlignTop)
 				index += 1
 			#self.resultsEdit.adjustSize()
 
@@ -116,4 +116,3 @@ if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	ex = SearchWindow()
 	sys.exit( app.exec_())
-

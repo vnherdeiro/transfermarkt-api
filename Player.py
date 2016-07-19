@@ -43,7 +43,7 @@ class Player():
 		theYs = [ int(_) for _ in re.findall(b"'y':(\d+)", content)]
 		if theYs:
 			value = theYs[-1]
-			self.playerAttributes["Value"] = value
+			self.playerAttributes["Value (int)"] = value
 			self.playerAttributes["Value Graph"] = zip(theXs, theYs)
 			#putting last value in printable form
 			valueString = ""
@@ -54,7 +54,7 @@ class Player():
 				else:
 					valueString = "£%d" %(value % 1000) + valueString
 				value = nextVal
-			self.playerAttributes["Printable Value"] = valueString
+			self.playerAttributes["Market Value"] = valueString
 
 	def __getitem__(self, arg):
 		return self.playerAttributes[arg] if arg in self.playerAttributes else "-" #or "n/a"
