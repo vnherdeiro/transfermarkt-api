@@ -23,8 +23,14 @@ class QPlayerLabel(QLabel):
 	def __init__(self, labelText, theUrl):
 		self.playerUrl = theUrl
 		super().__init__(labelText)
+		self.setStyleSheet("border : 1px solid gray; border-radius : 10px; background-color : #303030; color: white")
+		self.setFont( QFont("Fira Mono Bold",12))
+
 
 	def mousePressEvent(self, event):
+		self.displayPlayerWindow()
+
+	def displayPlayerWindow(self):
 		self.newWindow = PlayerWindow.PlayerWindow( self.playerUrl)
 		self.newWindow.show()
 
@@ -50,11 +56,17 @@ class SearchWindow(QWidget):
 
 	def initUI(self):
 
+		# self.setStyleSheet( "background-color : grey")
 		researchLabel = QLabel('Player Name')
+		researchLabel.setFont( QFont("Fira Mono Bold", 11))
+		researchLabel.adjustSize()
 		resultsLabel = QLabel('Search results')
+		resultsLabel.setFont( QFont("Fira Mono Bold", 11))
+		resultsLabel.adjustSize()
 
 		self.researchEdit = QLineEdit()
-		#self.resultsEdit.setFont( QFont("Fira Mono Bold",12))
+		self.researchEdit.setStyleSheet( "border : 2px solid #75FF6961; border-radius : 5px; background-color : #cbcbcb")
+		self.researchEdit.setFont( QFont("Fira Mono Bold",12))
 		#self.resultsEdit.setFontPointSize(15)
 		#self.resultsEdit.setAlignment(Qt.AlignRight)
 
@@ -83,13 +95,13 @@ class SearchWindow(QWidget):
 			item = self.grid.takeAt(3)
 			widg = item.widget()
 			widg.deleteLater()
-	# for widg in self.labelList:
-	# 		# widg.hide()
-	# 		# widg.setParent(None)
-	# 		self.grid.removeWidget(widg)
-	# 		widg.deleteLater()
-	#		del widg
-		#self.labelList = []
+		# for widg in self.labelList:
+		# 	widg.hide()
+		# 	widg.setParent(None)
+		# 	self.grid.removeWidget(widg)
+		# 	widg.deleteLater()
+		# 	del widg
+		# self.labelList = []
 		if output:
 			dicUrls, dicProperties = output
 			#printing after ordering by decreasing market value
@@ -99,7 +111,6 @@ class SearchWindow(QWidget):
 				playerUrl = dicUrls[ name]
 				labelText = "%-25s %2s %25s %8s" %(name, age, club, value)
 				newLabel = QPlayerLabel(labelText, playerUrl)
-				newLabel.setFont( QFont("Fira Mono Bold",12))
 				self.grid.addWidget(newLabel, index, 1, Qt.AlignTop)
 				index += 1
 			#self.resultsEdit.adjustSize()
