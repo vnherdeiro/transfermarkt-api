@@ -41,7 +41,7 @@ for link in soup.find_all("div", class_="dataDaten"):
 clubsPlayedFor = set()
 #redundancy here in collecting the club information
 for link in soup.find_all("td", class_="hauptlink no-border-links"):
-	clubsPlayedFor.add(	link.text)
+	clubsPlayedFor.add( link.text)
 # print clubsPlayedFor
 
 #now collecting goal information
