@@ -3,8 +3,8 @@
 #window scrapping and showing player information
 
 import sys
+
 import matplotlib
-# Make sure that we are using QT5
 matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -99,8 +99,8 @@ class PlayerWindow(QWidget):
 			self.close()
 
 	def __del__(self):
-		if os.path.isfile(self.pictureFilename):
-			os.remove(self.pictureFilename)
+		if os.path.isfile( self.pictureFilename):
+			os.remove( self.pictureFilename)
 		del self.profile
 		del self.pictureLabel
 

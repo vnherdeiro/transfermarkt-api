@@ -1,23 +1,22 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 
 
 import urllib
-import urllib2
 from bs4 import BeautifulSoup
 import re
 from time import time
 
 t1 = time()
 url = "http://www.transfermarkt.co.uk/cristiano-ronaldo/leistungsdatenverein/spieler/8198"
-#opener = urllib.request.build_opener()
+opener = urllib.request.build_opener()
 #opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-inData = urllib2.Request(url, headers = {'User-agent': 'Mozilla/5.0'})
-content = urllib2.urlopen(inData).read()
+opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+content = opener.open(url).read()
 t2 = time()
-print t2-t1
+print(t2-t1)
 soup = BeautifulSoup( content, "html.parser")
 t3 = time()
-print t3-t2
+print(t3-t2)
 #print soup.prettify()
 
 #cleans a string of excessive spaces and newlines
@@ -58,8 +57,8 @@ link = soup.find("select", {"data-placeholder":"Club(s)"})
 
 link = soup.find("table", class_="items")
 for data in link.find_all("td", class_="zentriert"):
-	print cleanString(data.text)
+	print(cleanString(data.text))
 
 t4 = time()
-print t4-t3
+print(t4-t3)
 #print trophies
