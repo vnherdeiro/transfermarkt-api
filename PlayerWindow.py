@@ -9,7 +9,7 @@ matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
-from PyQt5.QtWidgets import (QSizePolicy, QWidget, QSlider, QLabel, QApplication, QGridLayout)
+from PyQt5.QtWidgets import (QSizePolicy, QWidget, QSlider, QLabel, QApplication, QGridLayout, QPushButton)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 import urllib
@@ -18,6 +18,7 @@ import re
 import Player
 import os
 from datetime import datetime
+from PlayerPerformance import PlayerPerformanceData
 
 #downloads and stores file -- used to download player profile picture
 def downloadFile(url, fileName):
@@ -56,11 +57,25 @@ class ValueGraph(FigureCanvas):
 		self.axes.set_ylabel("Million £", fontsize=9)
 		#self.fig.tight_layout() -- bugged and useless here
 
+class PerformanceButton(QPushButton):
+
+	def __init__(self, textLink, playerUrl):
+		self.textLink = textLink
+		self.playerUrl = playerUrl
+		super().__init__()
+		self.clicked.connect(self.buttonClicked)
+
+	def buttonClicked(self):
+		perfData = PlayerPerformanceData(self.playerUrl)
+		self.textLink.setText( perfData.Summary)
+		self.textLink.show()
+		self.hide()
 
 class PlayerWindow(QWidget):
 
 	def __init__(self, playerUrl):
 		super().__init__()
+		self.playerUrl = playerUrl
 		self.profile = Player.Player(playerUrl)
 		self.initUI()
 
@@ -77,9 +92,9 @@ class PlayerWindow(QWidget):
 		downloadFile(self.profile["Picture"], self.pictureFilename)
 		self.pictureLabel.setPixmap( QPixmap( self.pictureFilename))
 		self.pictureLabel.adjustSize()
-		grid.addWidget(self.pictureLabel,0,0,5,5)
+		grid.addWidget(self.pictureLabel,0,0,3,3)
 		#self.label.setGeometry(160, 40, 80, 30)
-		index = 5
+		index = 3
 		for key, value in self.profile.playerAttributes.items():
 			if isinstance(value, (int,str)) and key != "Picture" and key != "Value (int)":
 				lhs = QLabel()
@@ -91,6 +106,14 @@ class PlayerWindow(QWidget):
 				index += 1
 		theGraph = ValueGraph( self.profile["Value Graph"], QWidget(self), width=5, height=4, dpi=100)
 		grid.addWidget(theGraph, index, 0, 3, 3, Qt.AlignTop)
+		index += 3
+		perfText = QLabel()
+		grid.addWidget( perfText, index, 0, 3, 3, Qt.AlignCenter)
+		perfText.hide()
+		perfButton = PerformanceButton( perfText, self.playerUrl)
+		perfButton.setText("Show %s performance data" %(self.profile["Name"]))
+		index += 3
+		grid.addWidget( perfButton, index, 0, 1, 3, Qt.AlignCenter)
 		self.setWindowTitle( self.profile["Name"])
 		self.show()
 
@@ -99,10 +122,12 @@ class PlayerWindow(QWidget):
 			self.close()
 
 	def __del__(self):
+		print ("\t\t\tcall destructor")
 		if os.path.isfile( self.pictureFilename):
 			os.remove( self.pictureFilename)
 		del self.profile
 		del self.pictureLabel
+
 
 if __name__ == '__main__':
 	app = QApplication( sys.argv)

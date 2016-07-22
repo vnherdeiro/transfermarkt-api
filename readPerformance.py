@@ -19,14 +19,14 @@ from time import time
 
 
 t1 = time()
-url = "http://www.transfermarkt.co.uk/cristiano-ronaldo/leistungsdatenverein/spieler/8198"
-# url = "http://www.transfermarkt.co.uk/rui-patricio/leistungsdaten/spieler/45026"
+url = "http://www.transfermarkt.co.uk/cristiano-ronaldo/leistungsdaten/spieler/8198"
+url = "http://www.transfermarkt.co.uk/rui-patricio/leistungsdaten/spieler/45026"
 opener = urllib.request.build_opener()
 opener.addheaders = [ ('User-agent', 'Mozilla/5.0')]
 content = opener.open(url).read()
 t2 = time()
 print( t2-t1)
-soup = BeautifulSoup( content, "html.parser")
+soup = BeautifulSoup( content, "lxml")
 t3 = time()
 print( t3-t2)
 #print soup.prettify()
@@ -56,10 +56,13 @@ for link in soup.find_all("div", class_="dataDaten"):
 #collecting list of all clubs the player has played for
 clubsPlayedFor = []
 #redundancy here in collecting the club information
-for link in soup.find_all("td", class_="hauptlink no-border-links"):
-	if link.text not in clubsPlayedFor: #this insures that they are stored in inverse career order
-		clubsPlayedFor.append( link.text)
+# for link in soup.find_all("td", class_="hauptlink no-border-links"):
+# 	if link.text not in clubsPlayedFor: #this insures that they are stored in inverse career order
+# 		clubsPlayedFor.append( link.text)
 
+linkClubPerf = soup.find("div", class_="table-header", text="Performance per club").parent()[1]
+for line in linkClubPerf.find_all("td", class_="hauptlink no-border-links"):
+	clubsPlayedFor.append( line.text)
 print ( "Played for:\t"," - ".join(club for club in clubsPlayedFor[::-1]))
 # print clubsPlayedFor
 
