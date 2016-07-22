@@ -117,12 +117,11 @@ class PlayerWindow(QWidget):
 		self.setWindowTitle( self.profile["Name"])
 		self.show()
 
-	def keyPressEvent(self, e): #closes on Esc press
-		if e.key() == Qt.Key_Escape:
+	def keyPressEvent(self, event): #closes on Esc press
+		if event.key() == Qt.Key_Escape:
 			self.close()
 
-	def __del__(self):
-		print ("\t\t\tcall destructor")
+	def closeEvent(self, event):
 		if os.path.isfile( self.pictureFilename):
 			os.remove( self.pictureFilename)
 		del self.profile

@@ -58,15 +58,15 @@ class PlayerPerformanceData():
 		link = link.parent()
 		self.international = link[1].text
 
-		self.Summary = "Career Totals:\n"
+		self.Summary = "<b>Career Totals:</b>"
 		for entry, value in zip(self.valTitles, self.valTab):
-			self.Summary += "\t%-30s\t%d\n" %(entry,value)
-		self.Summary += "\nInternational caps/goals: %s" % self.international
+			self.Summary += "<br>&emsp; %-30s&emsp; %d" %(entry,value)
+		self.Summary += "<br><b>International caps/goals:</b> %s" % self.international
 		clubString = " -> ".join(club for club in self.clubsPlayedFor[::-1])
-		self.Summary += "\n\nPlayed for:\t" + clubString
-		self.Summary += "\n\nTrophy List (non-exhaustive):"
+		self.Summary += "<br><b>Played for:</b><br>" + clubString
+		self.Summary += "<br><b>Trophy List</b> (non-exhaustive):"
 		for trophyEntry, trophyCount in self.trophies.items():
-			self.Summary += "\n\t%-30s (%d)" %(trophyEntry, trophyCount)
+			self.Summary += "<br>&emsp; %-30s (%d)" %(trophyEntry, trophyCount)
 
 
 
