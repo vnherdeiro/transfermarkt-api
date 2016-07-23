@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import sys
-import playerSearch
+import PlayerSearch
 from PyQt5.QtWidgets import (QWidget, QLabel, QLineEdit, QTextEdit, QGridLayout, QApplication, QTableView)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
