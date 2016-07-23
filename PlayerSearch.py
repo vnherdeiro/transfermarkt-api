@@ -2,18 +2,11 @@
 
 #script returning (first 10) results of a player search
 
-
 import urllib
 from bs4 import BeautifulSoup
 import re
-#import datetime
-
-#our class handling players
 from Player import Player
 
-
-
-#searches for players
 def research(playerName):
 	try:
 		baseUrl = "http://www.transfermarkt.co.uk/schnellsuche/ergebnis/schnellsuche?query="
@@ -23,7 +16,7 @@ def research(playerName):
 		opener.addheaders = [('User-agent', 'Mozilla/5.0')]
 		inData = opener.open(url)
 		content = inData.read()
-		soup = BeautifulSoup( content, "html.parser")
+		soup = BeautifulSoup( content, "lxml") #use html.parser if lxml not installed
 		dicPlayers = {}
 	#	for link in soup.find_all("a", {"class" : "spielprofil_tooltip"}):
 	#		dicPlayers[link.text] = Player(baseProfileUrl + link["href"])
@@ -52,3 +45,5 @@ if __name__ == "__main__":
 			dicUrls, dicProperties = output
 			for name, (age, club, value)  in dicProperties.items():
 				print( "\t%25s %2s %-35s %8s" %(name, age, club, value))
+
+#eof

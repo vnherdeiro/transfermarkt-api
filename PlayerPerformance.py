@@ -18,7 +18,7 @@ class PlayerPerformanceData():
 		opener = urllib.request.build_opener()
 		opener.addheaders = [ ('User-agent', 'Mozilla/5.0')]
 		content = opener.open(self.url).read()
-		soup = BeautifulSoup( content, "lxml")
+		soup = BeautifulSoup( content, "lxml") #use html.parser if lxml not installed
 
 		#non exhaustive trophy list
 		self.trophies = {}
@@ -58,30 +58,21 @@ class PlayerPerformanceData():
 		link = link.parent()
 		self.international = link[1].text
 
-		self.Summary = "<b>Career Totals:</b>"
+		Summary = "<b>Career Totals:</b>"
 		for entry, value in zip(self.valTitles, self.valTab):
-			self.Summary += "<br>&emsp; %-30s&emsp; %d" %(entry,value)
-		self.Summary += "<br><b>International caps/goals:</b> %s" % self.international
+			Summary += "<br>&emsp; %-30s&emsp; %d" %(entry,value)
+		Summary += "<br><b>International caps/goals:</b> %s" % self.international
 		clubString = " -> ".join(club for club in self.clubsPlayedFor[::-1])
-		self.Summary += "<br><b>Played for:</b><br>" + clubString
-		self.Summary += "<br><b>Trophy List</b> (non-exhaustive):"
+		Summary += "<br><b>Played for:</b><br>" + clubString
+		Summary += "<br><b>Trophy List</b> (non-exhaustive):"
 		for trophyEntry, trophyCount in self.trophies.items():
-			self.Summary += "<br>&emsp; %-30s (%d)" %(trophyEntry, trophyCount)
-
-
-
+			Summary += "<br>&emsp; %-30s (%d)" %(trophyEntry, trophyCount)
+		self.Summary = Summary
 
 
 if __name__ == "__main__":
 	url = "http://www.transfermarkt.co.uk/cristiano-ronaldo/profil/spieler/8198"
 	playerPerf = PlayerPerformanceData(url)
-	# print( "Trophies won: (non exhaustive)")
-	# for a,b in playerPerf.trophies.items():
-	# 	print ("\t%-30s\t%d" %(a,b))
-	# print ( "Played for:\t"," - ".join(club for club in playerPerf.clubsPlayedFor[::-1]))
-	# for a,b in zip(playerPerf.valTitles, playerPerf.valTab):
-	# 	print( "%-20s\t%d" %(a,b))
-	# print ("International caps/goals:\t", playerPerf.international)
 	print (playerPerf.Summary)
 
 #eof

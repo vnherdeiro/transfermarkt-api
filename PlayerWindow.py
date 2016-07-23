@@ -88,8 +88,8 @@ class PlayerWindow(QWidget):
 			self.pictureFilename = "." + self.profile["Complete name"].lower().replace(" ","") + ".jpg"
 		else:
 			self.pictureFilename = "." + self.profile["Name"].lower().replace(" ","") + ".jpg"
-		# print(self.pictureFilename)
-		downloadFile(self.profile["Picture"], self.pictureFilename)
+		#stores player profile picture locally to be displayed in window
+		downloadFile( self.profile["Picture"], self.pictureFilename)
 		self.pictureLabel.setPixmap( QPixmap( self.pictureFilename))
 		self.pictureLabel.adjustSize()
 		grid.addWidget(self.pictureLabel,0,0,3,3)
@@ -122,10 +122,9 @@ class PlayerWindow(QWidget):
 			self.close()
 
 	def closeEvent(self, event):
+		#deletes player profile picture local file
 		if os.path.isfile( self.pictureFilename):
 			os.remove( self.pictureFilename)
-		del self.profile
-		del self.pictureLabel
 
 
 if __name__ == '__main__':
@@ -133,3 +132,5 @@ if __name__ == '__main__':
 	url = "http://www.transfermarkt.co.uk/cristiano-ronaldo/profil/spieler/8198"
 	ex = PlayerWindow( url)
 	sys.exit( app.exec_())
+
+#eof
