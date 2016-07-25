@@ -73,7 +73,7 @@ class SearchWindow(QWidget):
 		grid.addWidget(researchEdit, 1, 1)
 		grid.addWidget(resultsLabel, 2, 0)
 		self.setLayout(grid)
-		self.setGeometry(100, 100, 1000, 400)
+		# self.setGeometry(100, 100, 1000, 400)
 		self.setWindowTitle('Player Searcher')
 		self.show()
 
